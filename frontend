@@ -1,0 +1,64 @@
+<!<!DOCTYPE html>
+<html>
+<head>
+  <title>StudyMate</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+    button { margin: 10px; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+    input { margin: 10px; padding: 8px; }
+    #output { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>📘 StudyMate - AI Powered PDF System</h1>
+
+  <h3>Upload your PDF</h3>
+  <input type="file" id="pdfFile" />
+  <button onclick="uploadPDF()">Upload</button>
+
+  <h3>Summarize PDF</h3>
+  <button onclick="summarizePDF()">Summarize</button>
+
+  <h3>Ask a Question</h3>
+  <input type="text" id="question" placeholder="Type your question here..." />
+  <button onclick="askQuestion()">Ask</button>
+
+  <p id="output"></p>
+
+  <script>
+    async function uploadPDF() {
+      const fileInput = document.getElementById("pdfFile").files[0];
+      if (!fileInput) {
+        document.getElementById("output").innerText = "Please select a PDF first!";
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", fileInput);
+
+      const res = await fetch("http://127.0.0.1:8000/upload", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      document.getElementById("output").innerText = data.message;
+    }
+
+    async function summarizePDF() {
+      const res = await fetch("http://127.0.0.1:8000/summarize");
+      const data = await res.json();
+      document.getElementById("output").innerText = data.message;
+    }
+
+    async function askQuestion() {
+      const q = document.getElementById("question").value;
+      if (!q) {
+        document.getElementById("output").innerText = "Please enter a question!";
+        return;
+      }
+      const res = await fetch(`http://127.0.0.1:8000/ask?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      document.getElementById("output").innerText = data.message;
+    }
+  </script>
+</body>
+</html>
