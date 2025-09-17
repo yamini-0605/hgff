@@ -25,3 +25,4 @@ It allows you to upload PDFs, ask questions, and get summaries instantl
    npm install
    npm start
 open in browser: https://localhost:3000
+![website scrrenshot](983ad379-1150-4716-a745-ab4c52c82da0.jpg)
